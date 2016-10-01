@@ -162,3 +162,27 @@ window.exampleVideoData = [{
     liveBroadcastContent: 'none'
   }
 }];
+
+window.emptyVideo = [{
+  // kind: 'youtube#searchResult',
+  // etag: 'abQHWywil_AkNqdqji7_FqiK-u4/Ykxo_CqKu8F8kcm-iNgL332gQTY',
+  id: {
+    kind: 'youtube#video',
+    videoId: ''
+  },
+  snippet: {
+    publishedAt: '',
+    channelId: '',
+    title: '',
+    description: '',
+    thumbnails: {
+      default: {
+        url: '',
+        // width: 120,
+        // height: 90
+      },
+    },
+    // channelTitle: '',
+    // liveBroadcastContent: 'none'
+  }
+}];

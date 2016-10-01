@@ -15,19 +15,24 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      current: exampleVideoData[0],
-      videoList: exampleVideoData
+      current: emptyVideo[0],
+      videoList: emptyVideo
     };
   }
 
   onClickTitle(i) {
     this.setState({
-      current: exampleVideoData[i]
+      current: this.state.videoList[i]
     });
   }
 
+  componentDidMount() {
+    this.props.searchYouTube({key: YOUTUBE_API_KEY, query: '', max: 10}, 
+      (data)=>{ this.setState({current: data[0], videoList: data}); });
+  }
+
   render() {
-    return (
+    return ( 
       <div>
         <Nav />
         <div className="col-md-7">
@@ -37,7 +42,7 @@ class App extends React.Component {
           <VideoList onClick={this.onClickTitle.bind(this)} videos = {this.state.videoList}/>
         </div>
       </div>
-    );
+    );    
   }
 }
 
