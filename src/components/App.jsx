@@ -16,7 +16,8 @@ class App extends React.Component {
 
     this.state = {
       current: emptyVideo[0],
-      videoList: emptyVideo
+      videoList: emptyVideo,
+      search: ''
     };
   }
 
@@ -24,17 +25,28 @@ class App extends React.Component {
     this.setState({
       current: this.state.videoList[i]
     });
+
+
+  }
+
+  onSearch(evt) {
+    this.setState({
+      search: evt.target.value
+    });
+
+    this.props.searchYouTube({key: YOUTUBE_API_KEY, query: this.state.search, max: 10}, 
+        (data)=>{ this.setState({current: data[0], videoList: data}); });
   }
 
   componentDidMount() {
-    this.props.searchYouTube({key: YOUTUBE_API_KEY, query: '', max: 10}, 
+    this.props.searchYouTube({key: YOUTUBE_API_KEY, query: this.state.search, max: 10}, 
       (data)=>{ this.setState({current: data[0], videoList: data}); });
   }
 
   render() {
     return ( 
       <div>
-        <Nav />
+        <Nav onChange={this.onSearch.bind(this)} />
         <div className="col-md-7">
           <VideoPlayer video = {this.state.current}/>
         </div>
