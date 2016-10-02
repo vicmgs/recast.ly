@@ -17,7 +17,7 @@ class App extends React.Component {
     this.state = {
       current: emptyVideo[0],
       videoList: emptyVideo,
-      search: ''
+      canCall: true
     };
   }
 
@@ -26,20 +26,31 @@ class App extends React.Component {
       current: this.state.videoList[i]
     });
 
+  } 
+
+  debounceSearch(callback) {
+    var context = this;
+    return function() {
+      if (context.state.canCall) {
+        callback();
+        context.state.canCall = false;
+        setTimeout(function() { context.state.canCall = true; }, 500);
+      } 
+    };
 
   }
 
   onSearch(evt) {
-    this.setState({
-      search: evt.target.value
-    });
 
-    this.props.searchYouTube({key: YOUTUBE_API_KEY, query: this.state.search, max: 10}, 
+    this.debounceSearch( () => {
+      this.props.searchYouTube({key: YOUTUBE_API_KEY, query: evt.target.value, max: 10}, 
         (data)=>{ this.setState({current: data[0], videoList: data}); });
+    })();
+    
   }
 
   componentDidMount() {
-    this.props.searchYouTube({key: YOUTUBE_API_KEY, query: this.state.search, max: 10}, 
+    this.props.searchYouTube({key: YOUTUBE_API_KEY, query: '', max: 10}, 
       (data)=>{ this.setState({current: data[0], videoList: data}); });
   }
 
